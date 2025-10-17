@@ -1,6 +1,9 @@
 services:
   mlflow:
-    image: ghcr.io/mlflow/mlflow:v2.16.2
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mlflow-postgres:2.16.2
     container_name: mlflow-container
     restart: unless-stopped
     environment:
