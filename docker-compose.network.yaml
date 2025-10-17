@@ -1,0 +1,25 @@
+# Docker Compose Network Configuration
+# This file creates a shared network for inter-service communication
+#
+# Usage:
+#   1. Create the network first:
+#      docker compose -f docker-compose.network.yaml up -d
+#
+#   2. Add this to any service's compose.yaml to join the network:
+#      networks:
+#        local-dev:
+#          external: true
+#          name: local-dev-network
+#
+# Services can then communicate using their container names as hostnames
+# Example: Your app can connect to postgres-container:5432
+
+networks:
+  local-dev-network:
+    name: local-dev-network
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/16
+          gateway: 172.20.0.1
