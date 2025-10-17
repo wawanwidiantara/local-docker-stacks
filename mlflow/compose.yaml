@@ -1,0 +1,36 @@
+services:
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.16.2
+    container_name: mlflow-container
+    restart: unless-stopped
+    environment:
+      MLFLOW_BACKEND_STORE_URI: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres-container:5432/${MLFLOW_DB}
+      MLFLOW_ARTIFACT_ROOT: /mlflow/artifacts
+      MLFLOW_TRACKING_USERNAME: ${MLFLOW_USERNAME}
+      MLFLOW_TRACKING_PASSWORD: ${MLFLOW_PASSWORD}
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow-artifacts:/mlflow/artifacts
+    command: >
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres-container:5432/${MLFLOW_DB}
+      --default-artifact-root /mlflow/artifacts
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - local-dev
+
+volumes:
+  mlflow-artifacts:
+    driver: local
+
+networks:
+  local-dev:
+    external: true
+    name: local-dev-network

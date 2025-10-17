@@ -13,20 +13,44 @@ make clean postgresql      # Remove with data
 ```
 
 **Default credentials:** `postgres/postgres`, `testuser/testpassword`, `admin/password`, `redispassword`  
-**Ports:** PostgreSQL (5432), MySQL (3306), MongoDB (27017), Redis (6379), MSSQL (1433), MinIO (9000, 9001)
+**Ports:** PostgreSQL (5432), MySQL (3306), MongoDB (27017), Redis (6379), MSSQL (1433), MinIO (9000, 9001), MailHog (8025), MLflow (5000), Qdrant (6333), ChromaDB (8000), Metabase (3001), Kafka (9092, 8080)
 
 ---
 
 ## 📦 Available Services
 
-| Service           | Version        | Ports      | Container Name     |
-| ----------------- | -------------- | ---------- | ------------------ |
-| **PostgreSQL**    | 17-alpine      | 5432       | postgres-container |
-| **MySQL**         | 8.4            | 3306       | mysql-container    |
-| **MongoDB**       | 8.0            | 27017      | mongo-container    |
-| **Redis**         | 7.4-alpine     | 6379       | redis-container    |
-| **MS SQL Server** | 2022-CU14      | 1433       | mssql-container    |
-| **MinIO**         | Latest Release | 9000, 9001 | minio-container    |
+### Databases
+
+| Service           | Version   | Ports | Container Name     | Description             |
+| ----------------- | --------- | ----- | ------------------ | ----------------------- |
+| **PostgreSQL**    | 17-alpine | 5432  | postgres-container | Relational database     |
+| **MySQL**         | 8.4       | 3306  | mysql-container    | Relational database     |
+| **MongoDB**       | 8.0       | 27017 | mongo-container    | NoSQL document database |
+| **Redis**         | 7.4       | 6379  | redis-container    | In-memory cache         |
+| **MS SQL Server** | 2022-CU14 | 1433  | mssql-container    | Enterprise database     |
+
+### Object Storage & Message Queue
+
+| Service   | Version | Ports      | Container Name  | Description           |
+| --------- | ------- | ---------- | --------------- | --------------------- |
+| **MinIO** | Latest  | 9000, 9001 | minio-container | S3-compatible storage |
+| **Kafka** | 7.7.1   | 9092, 8080 | kafka-container | Event streaming       |
+
+### AI/ML & Vector Databases
+
+| Service          | Version | Ports | Container Name        | Description              |
+| ---------------- | ------- | ----- | --------------------- | ------------------------ |
+| **Qdrant**       | 1.11.3  | 6333  | qdrant-container      | Vector database          |
+| **ChromaDB**     | 0.5.5   | 8000  | chromadb-container    | Vector database          |
+| **MLflow**       | 2.16.2  | 5000  | mlflow-container      | ML experiment tracking   |
+| **Label Studio** | 1.13.1  | 8082  | labelstudio-container | Data annotation/labeling |
+
+### Tools & Utilities
+
+| Service      | Version | Ports      | Container Name     | Description           |
+| ------------ | ------- | ---------- | ------------------ | --------------------- |
+| **MailHog**  | 1.0.1   | 1025, 8025 | mailhog-container  | Email testing         |
+| **Metabase** | 0.50.26 | 3001       | metabase-container | Business intelligence |
 
 ## 🚀 Setup
 
@@ -55,6 +79,26 @@ make init
 make up postgresql redis
 # or
 make up-all
+```
+
+### Special Setup for MLflow, Metabase & Label Studio
+
+These services require PostgreSQL with separate databases:
+
+```bash
+# 1. Start PostgreSQL first
+make up postgresql
+
+# 2. Create required databases
+docker exec -it postgres-container psql -U postgres -c "CREATE DATABASE mlflow;"
+docker exec -it postgres-container psql -U postgres -c "CREATE DATABASE metabase;"
+docker exec -it postgres-container psql -U postgres -c "CREATE DATABASE labelstudio;"
+
+# 3. Create shared network (for services to communicate)
+docker network create local-dev-network
+
+# 4. Start services
+make up mlflow metabase labelstudio
 ```
 
 ## 📖 Common Commands
@@ -136,6 +180,59 @@ User: minioadmin | Password: minioadmin
 Console: http://localhost:9001 | API: http://localhost:9000
 ```
 
+### MailHog
+
+```bash
+SMTP: localhost:1025 (no auth needed)
+Web UI: http://localhost:8025
+```
+
+### MLflow
+
+```bash
+Tracking Server: http://localhost:5000
+Requires PostgreSQL (create 'mlflow' database first)
+```
+
+### Qdrant
+
+```bash
+REST API: http://localhost:6333
+Dashboard: http://localhost:6333/dashboard
+gRPC: localhost:6334
+```
+
+### ChromaDB
+
+```bash
+HTTP API: http://localhost:8000
+No auth required for local development
+```
+
+### Metabase
+
+```bash
+Web UI: http://localhost:3001
+Requires PostgreSQL (create 'metabase' database first)
+First-time setup required
+```
+
+### Kafka
+
+```bash
+Bootstrap: localhost:9092
+Schema Registry: http://localhost:8081
+Kafka UI: http://localhost:8080
+```
+
+### Label Studio
+
+```bash
+Web UI: http://localhost:8082
+Default: admin@example.com / admin
+Requires PostgreSQL (create 'labelstudio' database first)
+```
+
 > 💡 **Tip:** Customize credentials by editing `.env` files in each service directory
 
 ## 🌐 Inter-Service Communication
@@ -145,7 +242,7 @@ Connect services to each other (e.g., your app needs database access):
 1. **Create shared network:**
 
 ```bash
-docker compose -f docker-compose.network.yaml up -d
+docker network create local-dev-network
 ```
 
 2. **Add to your app's `compose.yaml`:**

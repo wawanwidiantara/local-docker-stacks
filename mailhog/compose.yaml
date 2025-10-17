@@ -1,0 +1,21 @@
+services:
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    container_name: mailhog-container
+    restart: unless-stopped
+    ports:
+      - "1025:1025" # SMTP server
+      - "8025:8025" # Web UI
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8025",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5

@@ -1,0 +1,34 @@
+services:
+  metabase:
+    image: metabase/metabase:v0.50.26
+    container_name: metabase-container
+    restart: unless-stopped
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: ${METABASE_DB}
+      MB_DB_PORT: 5432
+      MB_DB_USER: ${POSTGRES_USER}
+      MB_DB_PASS: ${POSTGRES_PASSWORD}
+      MB_DB_HOST: postgres-container
+      MB_ENCRYPTION_SECRET_KEY: ${MB_ENCRYPTION_SECRET_KEY}
+    ports:
+      - "3001:3000"
+    volumes:
+      - metabase-data:/metabase-data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - local-dev
+
+volumes:
+  metabase-data:
+    driver: local
+
+networks:
+  local-dev:
+    external: true
+    name: local-dev-network

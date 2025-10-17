@@ -1,18 +1,33 @@
 # Docker Compose Network Configuration
 # This file creates a shared network for inter-service communication
 #
-# Usage:
-#   1. Create the network first:
-#      docker compose -f docker-compose.network.yaml up -d
+# Usage Option 1 (Recommended - Simple):
+#   docker network create local-dev-network
 #
-#   2. Add this to any service's compose.yaml to join the network:
-#      networks:
-#        local-dev:
-#          external: true
-#          name: local-dev-network
+# Usage Option 2 (Using docker-compose):
+#   docker compose -f docker-compose.network.yaml up -d
+#
+# To add services to this network, add this to their compose.yaml:
+#   networks:
+#     - local-dev
+#
+#   networks:
+#     local-dev:
+#       external: true
+#       name: local-dev-network
 #
 # Services can then communicate using their container names as hostnames
 # Example: Your app can connect to postgres-container:5432
+
+services:
+  # Dummy service to allow 'docker compose up'
+  # This service does nothing but allows the network to be created via compose
+  network-helper:
+    image: alpine:latest
+    container_name: network-helper
+    command: echo "Network local-dev-network is ready"
+    networks:
+      - local-dev-network
 
 networks:
   local-dev-network:

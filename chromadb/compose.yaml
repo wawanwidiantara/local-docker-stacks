@@ -1,0 +1,24 @@
+services:
+  chromadb:
+    image: chromadb/chroma:0.5.5
+    container_name: chromadb-container
+    restart: unless-stopped
+    environment:
+      IS_PERSISTENT: "TRUE"
+      PERSIST_DIRECTORY: /chroma/chroma
+      ANONYMIZED_TELEMETRY: ${CHROMA_TELEMETRY}
+      CHROMA_SERVER_AUTH_CREDENTIALS: ${CHROMA_AUTH_CREDENTIALS}
+      CHROMA_SERVER_AUTH_PROVIDER: ${CHROMA_AUTH_PROVIDER}
+    ports:
+      - "8000:8000"
+    volumes:
+      - chromadb-data:/chroma/chroma
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  chromadb-data:
+    driver: local

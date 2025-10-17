@@ -1,0 +1,36 @@
+services:
+  labelstudio:
+    image: heartexlabs/label-studio:1.21.0
+    container_name: labelstudio-container
+    restart: unless-stopped
+    environment:
+      DJANGO_DB: default
+      POSTGRE_NAME: ${LABELSTUDIO_DB}
+      POSTGRE_USER: ${POSTGRES_USER}
+      POSTGRE_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRE_PORT: 5432
+      POSTGRE_HOST: postgres-container
+      LABEL_STUDIO_HOST: ${LABEL_STUDIO_HOST}
+      LABEL_STUDIO_USERNAME: ${LABEL_STUDIO_USERNAME}
+      LABEL_STUDIO_PASSWORD: ${LABEL_STUDIO_PASSWORD}
+    ports:
+      - "8082:8080"
+    volumes:
+      - labelstudio-data:/label-studio/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 45s
+    networks:
+      - local-dev
+
+volumes:
+  labelstudio-data:
+    driver: local
+
+networks:
+  local-dev:
+    external: true
+    name: local-dev-network

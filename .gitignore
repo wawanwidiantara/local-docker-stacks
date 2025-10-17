@@ -34,3 +34,4 @@ temp/
 # Docker override files (personal customizations)
 docker-compose.override.yml
 compose.override.yaml
+NEW_SERVICES.md

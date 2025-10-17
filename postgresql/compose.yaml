@@ -17,7 +17,14 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - local-dev
 
 volumes:
   postgres-data:
     driver: local
+
+networks:
+  local-dev:
+    external: true
+    name: local-dev-network

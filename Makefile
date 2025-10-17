@@ -26,6 +26,13 @@ help:
 	@echo "  - redis"
 	@echo "  - mongodb"
 	@echo "  - minio"
+	@echo "  - mailhog"
+	@echo "  - mlflow"
+	@echo "  - qdrant"
+	@echo "  - chromadb"
+	@echo "  - metabase"
+	@echo "  - kafka"
+	@echo "  - labelstudio"
 	@echo ""
 	@echo "Examples:"
 	@echo "  make up mysql"
@@ -133,7 +140,7 @@ clean:
 # Start all services
 up-all:
 	@echo "Starting all services..."
-	@for dir in mysql mssql-server postgresql redis mongodb minio; do \
+	@for dir in mysql mssql-server postgresql redis mongodb minio mailhog mlflow qdrant chromadb metabase kafka labelstudio; do \
 		if [ -d "$$dir" ]; then \
 			echo "Starting $$dir..."; \
 			cd $$dir && docker compose up -d && cd ..; \
@@ -144,7 +151,7 @@ up-all:
 # Stop all services
 down-all:
 	@echo "Stopping all services..."
-	@for dir in mysql mssql-server postgresql redis mongodb minio; do \
+	@for dir in mysql mssql-server postgresql redis mongodb minio mailhog mlflow qdrant chromadb metabase kafka labelstudio; do \
 		if [ -d "$$dir" ]; then \
 			echo "Stopping $$dir..."; \
 			cd $$dir && docker compose down && cd ..; \
@@ -156,7 +163,7 @@ down-all:
 ps-all:
 	@echo "Status of all services:"
 	@echo "======================"
-	@for dir in mysql mssql-server postgresql redis mongodb minio; do \
+	@for dir in mysql mssql-server postgresql redis mongodb minio mailhog mlflow qdrant chromadb metabase kafka labelstudio; do \
 		if [ -d "$$dir" ]; then \
 			echo ""; \
 			echo "$$dir:"; \
@@ -198,6 +205,28 @@ shell:
 				echo "Opening MinIO container shell..."; \
 				cd $$SERVICE && docker compose exec minio sh; \
 				;; \
+			mailhog) \
+				echo "MailHog has no interactive shell. Access Web UI at http://localhost:8025"; \
+				;; \
+			mlflow) \
+				echo "MLflow has no interactive shell. Access Web UI at http://localhost:5000"; \
+				;; \
+			qdrant) \
+				echo "Qdrant has no interactive shell. Access Web UI at http://localhost:6333/dashboard"; \
+				;; \
+			chromadb) \
+				echo "ChromaDB has no interactive shell. Access API at http://localhost:8000"; \
+				;; \
+			metabase) \
+				echo "Metabase has no interactive shell. Access Web UI at http://localhost:3001"; \
+				;; \
+			kafka) \
+				echo "Opening Kafka container shell..."; \
+				cd $$SERVICE && docker compose exec kafka bash; \
+				;; \
+			labelstudio) \
+				echo "Label Studio has no interactive shell. Access Web UI at http://localhost:8082"; \
+				;; \
 			*) \
 				echo "Shell not configured for $$SERVICE"; \
 				exit 1; \
@@ -227,7 +256,7 @@ exec:
 # Initialize all .env files from .env.example
 init:
 	@echo "Initializing .env files from .env.example..."
-	@for dir in mysql mssql-server postgresql redis mongodb minio; do \
+	@for dir in mysql mssql-server postgresql redis mongodb minio mailhog mlflow qdrant chromadb metabase kafka labelstudio; do \
 		if [ -d "$$dir" ]; then \
 			if [ -f "$$dir/.env.example" ] && [ ! -f "$$dir/.env" ]; then \
 				cp "$$dir/.env.example" "$$dir/.env"; \
