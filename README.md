@@ -1,6 +1,6 @@
 # Docker Stacks
 
-A collection of production-ready Docker Compose configurations for common database and service stacks. Keep your local development environment clean and organized with isolated, easily manageable containers.
+A simple collection of Docker Compose configurations for quickly spinning up databases and services when you want to test features locally. Keep your local development environment clean without installing databases directly on your machine.
 
 ## 📦 Available Services
 
@@ -17,11 +17,10 @@ A collection of production-ready Docker Compose configurations for common databa
 
 ### Prerequisites
 
-- Docker Engine 20.10+
-- Docker Compose V2
-- Make (optional, for using Makefile commands)
+- Docker and Docker Compose installed
+- Make (optional, but makes things easier)
 
-### Installation
+### Usage
 
 1. Clone this repository:
 ```bash
@@ -29,20 +28,18 @@ git clone <your-repo-url>
 cd stacks
 ```
 
-2. Choose a service and update the `.env` file with your credentials:
+2. Copy `.env.example` to each service directory as `.env` (or just use defaults):
 ```bash
-cd mysql
-nano .env  # or use your preferred editor
+cp .env.example mysql/.env
+cp .env.example postgresql/.env
+# ... etc
 ```
 
-3. Start the service:
+3. Start whatever you need:
 ```bash
-# Using Make
 make up mysql
-
-# Or using Docker Compose directly
-cd mysql
-docker compose up -d
+# or
+cd mysql && docker compose up -d
 ```
 
 ## 📖 Usage
@@ -180,24 +177,21 @@ cd minio
 # http://localhost:9000
 ```
 
-## 🔐 Security Best Practices
+## ⚠️ Security Notes
 
-⚠️ **IMPORTANT**: Before using in production or exposing services externally:
+**This is for local testing only!** Don't use these configs in production without proper hardening:
 
-1. **Change all default passwords** in the `.env` files
-2. **Never commit `.env` files** with real credentials to version control
-3. **Use strong passwords** (minimum 16 characters, mixed case, numbers, symbols)
-4. **Limit port exposure** - only expose ports you need
-5. **Use Docker networks** to isolate services
-6. **Regular updates** - keep images updated with security patches
-7. **Enable SSL/TLS** for production deployments
+- Default passwords are intentionally simple for quick local setup
+- Services are exposed on localhost (be careful if you open ports publicly)
+- No SSL/TLS configured
+- No backup strategies included
 
-### Recommended Password Generation
-
-```bash
-# Generate a secure random password
-openssl rand -base64 32
-```
+If you need production configs, you'll want to:
+- Use proper secrets management
+- Add SSL/TLS certificates
+- Configure firewalls and network isolation
+- Set up monitoring and backups
+- Use strong, unique passwords
 
 ## 📊 Health Checks
 
@@ -213,21 +207,7 @@ docker inspect <container-name> | grep -A 10 Health
 
 ## 🗂️ Data Persistence
 
-All services use Docker volumes for data persistence:
-
-```bash
-# List all volumes
-docker volume ls
-
-# Inspect a volume
-docker volume inspect <volume-name>
-
-# Backup a volume
-docker run --rm -v <volume-name>:/data -v $(pwd):/backup alpine tar czf /backup/backup.tar.gz /data
-
-# Restore a volume
-docker run --rm -v <volume-name>:/data -v $(pwd):/backup alpine tar xzf /backup/backup.tar.gz -C /
-```
+Services use Docker volumes, so your data persists between restarts. If you want a clean slate, use `make clean <service>` to wipe everything.
 
 ## 🧹 Cleanup
 
@@ -285,101 +265,14 @@ docker inspect <container-name> --format='{{json .State.Health}}'
 make restart <service-name>
 ```
 
-## 📝 Adding New Services
+## 📝 Adding Your Own Services
 
-1. Create a new directory for your service:
-```bash
-mkdir my-new-service
-cd my-new-service
-```
-
-2. Create `compose.yaml` and `.env` files following the existing patterns
-
-3. Update the Makefile to include your new service in the loops:
-```makefile
-# Add to up-all, down-all, ps-all targets
-@for dir in mysql mssql-server postgresql redis mongodb minio my-new-service; do
-```
-
-4. Test your service:
-```bash
-make up my-new-service
-```
-
-## 🤝 Contributing
-
-Contributions are welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+Feel free to add more services following the same pattern - just create a directory with a `compose.yaml` and `.env` file.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🔗 Useful Links
-
-- [Docker Documentation](https://docs.docker.com/)
-- [Docker Compose Documentation](https://docs.docker.com/compose/)
-- [MySQL Docker Hub](https://hub.docker.com/_/mysql)
-- [PostgreSQL Docker Hub](https://hub.docker.com/_/postgres)
-- [Redis Docker Hub](https://hub.docker.com/_/redis)
-- [MongoDB Docker Hub](https://hub.docker.com/_/mongo)
-- [MS SQL Server Docker Hub](https://hub.docker.com/_/microsoft-mssql-server)
-- [MinIO Documentation](https://min.io/docs/minio/container/index.html)
-
-## ⚡ Tips & Tricks
-
-### Connect services together
-Create a custom Docker network to connect multiple services:
-```bash
-docker network create myapp-network
-```
-
-Then add to your compose.yaml:
-```yaml
-networks:
-  default:
-    external: true
-    name: myapp-network
-```
-
-### Resource limits
-Add resource constraints to prevent services from consuming all system resources:
-```yaml
-services:
-  mysql-db:
-    # ... other config
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
-          memory: 2G
-        reservations:
-          memory: 512M
-```
-
-### Environment-specific configs
-Use multiple .env files for different environments:
-```bash
-# Development
-docker compose --env-file .env.dev up -d
-
-# Production
-docker compose --env-file .env.prod up -d
-```
-
-## 📞 Support
-
-If you encounter any issues or have questions:
-
-1. Check the [Troubleshooting](#-troubleshooting) section
-2. Search existing [Issues](https://github.com/your-username/stacks/issues)
-3. Create a new issue with detailed information
+MIT License - do whatever you want with it.
 
 ---
 
-**Made with ❤️ for developers who like clean environments**
+**Just a simple repo to avoid cluttering my machine with databases I only need occasionally.**
