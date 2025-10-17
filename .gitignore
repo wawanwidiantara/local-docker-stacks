@@ -1,0 +1,36 @@
+# Environment files with sensitive data
+.env
+*.env
+!.env.example
+
+# Docker volumes (if using bind mounts)
+data/
+volumes/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Backup files
+*.bak
+*.backup
+*.tar.gz
+backup/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Docker override files (personal customizations)
+docker-compose.override.yml
+compose.override.yaml
