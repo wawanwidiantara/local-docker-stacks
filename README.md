@@ -1,251 +1,161 @@
 # Local Docker Stacks
 
-Quick local development databases and services. Keep your machine clean - no local installations needed.
+🚀 **Quick local development databases and services** - Keep your machine clean, no local installations needed.
 
-## ⚡ Quick Reference
+---
+
+## ⚡ Quick Start
 
 ```bash
-make init                  # Setup all .env files
-make up postgresql redis   # Start services
-make shell postgresql      # Open psql
-make ps-all                # Check status
-make clean postgresql      # Remove with data
-```
+# 1. Setup environment files
+make init
 
-**Default credentials:** `postgres/postgres`, `testuser/testpassword`, `admin/password`, `redispassword`  
-**Ports:** PostgreSQL (5432), MySQL (3306), MongoDB (27017), Redis (6379), MSSQL (1433), MinIO (9000, 9001), MailHog (8025), MLflow (5000), Qdrant (6333), ChromaDB (8000), Metabase (3001), Kafka (9092, 8080)
+# 2. Start services you need
+make up postgresql redis mongodb
+
+# 3. Access services
+make shell postgresql    # Open psql
+make logs redis          # View logs
+make ps-all              # Check all services
+
+# 4. Stop when done
+make down postgresql redis
+```
 
 ---
 
 ## 📦 Available Services
 
-### Databases
+### 🗄️ Databases
 
-| Service           | Version   | Ports | Container Name     | Description             |
-| ----------------- | --------- | ----- | ------------------ | ----------------------- |
-| **PostgreSQL**    | 17-alpine | 5432  | postgres-container | Relational database     |
-| **MySQL**         | 8.4       | 3306  | mysql-container    | Relational database     |
-| **MongoDB**       | 8.0       | 27017 | mongo-container    | NoSQL document database |
-| **Redis**         | 7.4       | 6379  | redis-container    | In-memory cache         |
-| **MS SQL Server** | 2022-CU14 | 1433  | mssql-container    | Enterprise database     |
+| Service           | Port  | Quick Access              | Documentation                       |
+| ----------------- | ----- | ------------------------- | ----------------------------------- |
+| **PostgreSQL**    | 5432  | `make shell postgresql`   | [📖 Full Guide](docs/POSTGRESQL.md) |
+| **MySQL**         | 3306  | `make shell mysql`        | [📖 Full Guide](docs/MYSQL.md)      |
+| **MongoDB**       | 27017 | `make shell mongodb`      | [📖 Full Guide](docs/MONGODB.md)    |
+| **Redis**         | 6379  | `make shell redis`        | [📖 Full Guide](docs/REDIS.md)      |
+| **MS SQL Server** | 1433  | `make shell mssql-server` | [📖 Full Guide](docs/MSSQL.md)      |
 
-### Object Storage & Message Queue
+### 🪣 Storage & Streaming
 
-| Service   | Version | Ports      | Container Name  | Description           |
-| --------- | ------- | ---------- | --------------- | --------------------- |
-| **MinIO** | Latest  | 9000, 9001 | minio-container | S3-compatible storage |
-| **Kafka** | 7.7.1   | 9092, 8080 | kafka-container | Event streaming       |
+| Service   | Ports      | Web UI                | Documentation                  |
+| --------- | ---------- | --------------------- | ------------------------------ |
+| **MinIO** | 9000, 9001 | http://localhost:9001 | [📖 Full Guide](docs/MINIO.md) |
+| **Kafka** | 9092, 8080 | http://localhost:8080 | [📖 Coming Soon]()             |
 
-### AI/ML & Vector Databases
+### 🤖 AI/ML & Vector DBs
 
-| Service          | Version | Ports | Container Name        | Description              |
-| ---------------- | ------- | ----- | --------------------- | ------------------------ |
-| **Qdrant**       | 1.11.3  | 6333  | qdrant-container      | Vector database          |
-| **ChromaDB**     | 0.5.5   | 8000  | chromadb-container    | Vector database          |
-| **MLflow**       | 2.16.2  | 5000  | mlflow-container      | ML experiment tracking   |
-| **Label Studio** | 1.13.1  | 8082  | labelstudio-container | Data annotation/labeling |
+| Service          | Port | Web UI                          | Documentation                         |
+| ---------------- | ---- | ------------------------------- | ------------------------------------- |
+| **Qdrant**       | 6333 | http://localhost:6333/dashboard | [📖 Full Guide](docs/QDRANT.md)       |
+| **ChromaDB**     | 8000 | http://localhost:8000           | [📖 Coming Soon]()                    |
+| **MLflow**       | 5000 | http://localhost:5000           | [📖 Full Guide](docs/MLFLOW.md)       |
+| **Label Studio** | 8082 | http://localhost:8082           | [📖 Full Guide](docs/LABEL_STUDIO.md) |
 
-### Tools & Utilities
+### 🛠️ Tools
 
-| Service      | Version | Ports      | Container Name     | Description           |
-| ------------ | ------- | ---------- | ------------------ | --------------------- |
-| **MailHog**  | 1.0.1   | 1025, 8025 | mailhog-container  | Email testing         |
-| **Metabase** | 0.50.26 | 3001       | metabase-container | Business intelligence |
+| Service      | Ports      | Web UI                | Documentation                    |
+| ------------ | ---------- | --------------------- | -------------------------------- |
+| **MailHog**  | 1025, 8025 | http://localhost:8025 | [📖 Full Guide](docs/MAILHOG.md) |
+| **Metabase** | 3001       | http://localhost:3001 | [📖 Coming Soon]()               |
+
+---
 
 ## 🚀 Setup
 
-**Prerequisites:** Docker, Docker Compose, Make (optional)
+### Prerequisites
 
-### First Time Setup
+- Docker & Docker Compose installed
+- Make (optional, but recommended)
 
-1. Clone this repository:
-
-```bash
-git clone <your-repo-url>
-cd local-docker-stacks
-```
-
-2. Initialize environment files:
+### Basic Usage
 
 ```bash
+# Initialize .env files
 make init
-```
 
-3. (Optional) Edit credentials in `<service>/.env` files
-
-4. Start services:
-
-```bash
+# Start any service
 make up postgresql redis
-# or
-make up-all
+
+# Stop service
+make down postgresql
 ```
 
-### Special Setup for MLflow, Metabase & Label Studio
+### ML/AI Services Setup
 
-These services require PostgreSQL with separate databases:
+MLflow, Metabase, and Label Studio require PostgreSQL + shared network:
 
 ```bash
-# 1. Start PostgreSQL first
+# 1. Start PostgreSQL
 make up postgresql
 
-# 2. Create required databases
-docker exec -it postgres-container psql -U postgres -c "CREATE DATABASE mlflow;"
-docker exec -it postgres-container psql -U postgres -c "CREATE DATABASE metabase;"
-docker exec -it postgres-container psql -U postgres -c "CREATE DATABASE labelstudio;"
+# 2. Create databases
+docker exec -it postgres-container psql -U postgres << EOF
+CREATE DATABASE mlflow;
+CREATE DATABASE metabase;
+CREATE DATABASE labelstudio;
+EOF
 
-# 3. Create shared network (for services to communicate)
+# 3. Create shared network
 docker network create local-dev-network
 
-# 4. Start services
+# 4. Start ML services
 make up mlflow metabase labelstudio
 ```
+
+📖 **For detailed setup:** Check individual service documentation links above.
+
+---
 
 ## 📖 Common Commands
 
 ```bash
-# Service management
-make up <service>         # Start a service
-make down <service>       # Stop a service
-make restart <service>    # Restart a service
-make logs <service>       # View logs
-make ps <service>         # Check status
-make clean <service>      # Stop and remove data (⚠️ deletes volumes)
-
-# Database CLI access
-make shell postgresql     # Open psql
-make shell mysql          # Open mysql
-make shell mongodb        # Open mongosh
-make shell redis          # Open redis-cli
-make shell mssql-server   # Open sqlcmd
-
-# Container shell
-make exec <service>       # Open bash/sh in container
-
-# All services
-make up-all               # Start all services
-make down-all             # Stop all services
-make ps-all               # Status of all services
-
-# Help
-make help                 # Show all commands
+make help                    # Show all commands
+make up <service>            # Start service
+make down <service>          # Stop service
+make restart <service>       # Restart service
+make logs <service>          # View logs
+make shell <service>         # Open database CLI
+make ps-all                  # Check all services status
+make up-all                  # Start ALL services
+make down-all                # Stop ALL services
+make clean <service>         # ⚠️ Delete service + data
 ```
 
-## 🔑 Default Credentials & Connections
+**Service names:** `postgresql`, `mysql`, `mongodb`, `redis`, `mssql-server`, `minio`, `mailhog`, `mlflow`, `qdrant`, `chromadb`, `metabase`, `kafka`, `labelstudio`
 
-### PostgreSQL
+---
 
-```bash
-User: postgres | Password: postgres | Database: testdb
-make shell postgresql
-postgresql://postgres:postgres@localhost:5432/testdb
-```
+## 🔑 Default Credentials
 
-### MySQL
+| Service      | URL/Port              | Credentials                   |
+| ------------ | --------------------- | ----------------------------- |
+| PostgreSQL   | `localhost:5432`      | `postgres` / `postgres`       |
+| MySQL        | `localhost:3306`      | `testuser` / `testpassword`   |
+| MongoDB      | `localhost:27017`     | `admin` / `password`          |
+| Redis        | `localhost:6379`      | Password: `redispassword`     |
+| MSSQL        | `localhost:1433`      | `sa` / `YourStrong!Passw0rd`  |
+| MinIO        | http://localhost:9001 | `minioadmin` / `minioadmin`   |
+| MailHog      | http://localhost:8025 | No auth                       |
+| MLflow       | http://localhost:5000 | No auth                       |
+| Metabase     | http://localhost:3001 | Setup on first login          |
+| Label Studio | http://localhost:8082 | `admin@example.com` / `admin` |
 
-```bash
-User: testuser | Password: testpassword | Database: testdb
-make shell mysql
-mysql://testuser:testpassword@localhost:3306/testdb
-```
+💡 **Customize:** Edit `.env` files in each service directory before first start.
 
-### MongoDB
+---
 
-```bash
-User: admin | Password: password | Database: testdb
-make shell mongodb
-mongodb://admin:password@localhost:27017/testdb?authSource=admin
-```
+## 🌐 Connect Services Together
 
-### Redis
+To connect services to each other (e.g., your app accessing databases):
 
-```bash
-Password: redispassword
-make shell redis
-redis://:redispassword@localhost:6379
-```
-
-### MS SQL Server
-
-```bash
-User: sa | Password: YourStrong!Passw0rd
-make shell mssql-server
-Server=localhost,1433;User Id=sa;Password=YourStrong!Passw0rd;
-```
-
-### MinIO
-
-```bash
-User: minioadmin | Password: minioadmin
-Console: http://localhost:9001 | API: http://localhost:9000
-```
-
-### MailHog
-
-```bash
-SMTP: localhost:1025 (no auth needed)
-Web UI: http://localhost:8025
-```
-
-### MLflow
-
-```bash
-Tracking Server: http://localhost:5000
-Requires PostgreSQL (create 'mlflow' database first)
-```
-
-### Qdrant
-
-```bash
-REST API: http://localhost:6333
-Dashboard: http://localhost:6333/dashboard
-gRPC: localhost:6334
-```
-
-### ChromaDB
-
-```bash
-HTTP API: http://localhost:8000
-No auth required for local development
-```
-
-### Metabase
-
-```bash
-Web UI: http://localhost:3001
-Requires PostgreSQL (create 'metabase' database first)
-First-time setup required
-```
-
-### Kafka
-
-```bash
-Bootstrap: localhost:9092
-Schema Registry: http://localhost:8081
-Kafka UI: http://localhost:8080
-```
-
-### Label Studio
-
-```bash
-Web UI: http://localhost:8082
-Default: admin@example.com / admin
-Requires PostgreSQL (create 'labelstudio' database first)
-```
-
-> 💡 **Tip:** Customize credentials by editing `.env` files in each service directory
-
-## 🌐 Inter-Service Communication
-
-Connect services to each other (e.g., your app needs database access):
-
-1. **Create shared network:**
+**1. Create shared network:**
 
 ```bash
 docker network create local-dev-network
 ```
 
-2. **Add to your app's `compose.yaml`:**
+**2. Add to your `docker-compose.yaml`:**
 
 ```yaml
 networks:
@@ -257,57 +167,126 @@ networks:
     name: local-dev-network
 ```
 
-3. **Connect using container names:**
-   - `postgres-container:5432`
-   - `mysql-container:3306`
-   - `redis-container:6379`
-   - `mongo-container:27017`
+**3. Use container names as hostnames:**
+
+- PostgreSQL: `postgres-container:5432`
+- MySQL: `mysql-container:3306`
+- Redis: `redis-container:6379`
+- MongoDB: `mongo-container:27017`
+- MinIO: `minio-container:9000`
+
+---
 
 ## 🧹 Cleanup & Troubleshooting
 
-### Cleanup
+### Cleanup Commands
 
 ```bash
-make clean postgresql              # Remove service + data
-docker system prune -a --volumes   # Nuclear option
+# Remove service with data
+make clean postgresql
+
+# Remove all stopped containers and volumes
+docker system prune -a --volumes
+
+# Remove specific volume
+docker volume rm postgres-data
 ```
 
 ### Troubleshooting
 
 ```bash
-make logs <service>                # Check logs
-sudo lsof -i :5432                 # Check port usage
-docker ps                          # Check health status
-make restart <service>             # Try restart
+# Check logs
+make logs <service>
+
+# Check what's using a port
+sudo lsof -i :5432
+
+# Check container health
+docker ps
+
+# Restart service
+make restart <service>
+
+# Check Docker resources
+docker system df
 ```
 
 ### Common Issues
 
-- **Port in use:** Change port in `compose.yaml`: `"5433:5432"`
-- **Permission issues:** `docker volume rm <volume>` then restart
-- **Unhealthy:** Check logs with `make logs <service>`
+**Port already in use:**
 
-## 📝 Adding Custom Services
+```bash
+# Change port in service's compose.yaml
+ports:
+  - "5433:5432"  # Use 5433 instead of 5432
+```
 
-1. Create directory: `mkdir my-service && cd my-service`
-2. Add `compose.yaml` and `.env.example`
-3. Run: `make init && make up my-service`
+**Permission denied:**
 
-See existing services for examples.
+```bash
+docker volume rm <volume-name>
+make up <service>
+```
 
-## ⚠️ Security
+**Container unhealthy:**
 
-**Local development only!** Not production-ready:
-
-- ✅ Has: Health checks, volume persistence, `.env` isolation
-- ❌ Missing: SSL/TLS, advanced auth, production secrets, monitoring
-
-**Credentials:** All defaults in `.env.example`, actual values in `.env` (gitignored)
-
-## 📄 License
-
-MIT - do whatever you want with it.
+```bash
+make logs <service>  # Check what's wrong
+make restart <service>
+```
 
 ---
 
-_Simple repo to avoid cluttering my machine with databases._
+## 📝 Adding Your Own Services
+
+1. Create service directory:
+
+```bash
+mkdir my-service
+cd my-service
+```
+
+2. Create `compose.yaml` and `.env.example`
+
+3. Add to Makefile (optional)
+
+4. Run:
+
+```bash
+make init
+make up my-service
+```
+
+See existing services for examples!
+
+---
+
+## ⚠️ Security Notice
+
+**⚡ Local development only!**
+
+These configurations are **NOT production-ready**:
+
+- ✅ Good for: Local dev, testing, learning
+- ❌ Missing for prod: SSL/TLS, proper auth, secrets management, monitoring, backups
+
+**Default credentials are in `.env.example` for convenience** - real values go in `.env` (gitignored).
+
+---
+
+## 📚 Documentation
+
+- **Databases:** [PostgreSQL](docs/POSTGRESQL.md) • [MySQL](docs/MYSQL.md) • [MongoDB](docs/MONGODB.md) • [Redis](docs/REDIS.md) • [MSSQL](docs/MSSQL.md)
+- **Storage:** [MinIO](docs/MINIO.md)
+- **ML/AI:** [Label Studio](docs/LABEL_STUDIO.md) • [Other Services](NEW_SERVICES.md)
+- **All Services:** See table above for links
+
+---
+
+## 📄 License
+
+MIT License - Use however you want!
+
+---
+
+**Made with 💙 to keep my machine clean and development simple.**
