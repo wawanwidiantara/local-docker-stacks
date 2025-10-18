@@ -2,56 +2,74 @@ name: Validate Docker Compose Files
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 jobs:
   validate:
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
-        service: [mysql, mssql-server, postgresql, redis, mongodb, minio]
-    
+        service:
+          [
+            mysql,
+            mssql-server,
+            postgresql,
+            redis,
+            mongodb,
+            minio,
+            mailhog,
+            mlflow,
+            qdrant,
+            chromadb,
+            metabase,
+            kafka,
+            labelstudio,
+          ]
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-    
-    - name: Create .env file for ${{ matrix.service }}
-      run: |
-        cd ${{ matrix.service }}
-        if [ -f .env ]; then
-          echo ".env already exists, using it for validation"
-        else
-          echo "Creating .env from .env.example"
-          cp ../.env.example .env
-        fi
-    
-    - name: Validate compose file for ${{ matrix.service }}
-      run: |
-        cd ${{ matrix.service }}
-        docker compose config --quiet
-    
-    - name: Check compose file syntax for ${{ matrix.service }}
-      run: |
-        cd ${{ matrix.service }}
-        docker compose config > /dev/null
-        echo "✅ ${{ matrix.service }}/compose.yaml is valid"
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Create .env file for ${{ matrix.service }}
+        run: |
+          cd ${{ matrix.service }}
+          if [ -f .env ]; then
+            echo ".env already exists"
+          elif [ -f .env.example ]; then
+            echo "Creating .env from .env.example"
+            cp .env.example .env
+          else
+            echo "No .env.example found, skipping"
+            touch .env
+          fi
+
+      - name: Validate compose file for ${{ matrix.service }}
+        run: |
+          cd ${{ matrix.service }}
+          docker compose config --quiet
+
+      - name: Check compose file syntax for ${{ matrix.service }}
+        run: |
+          cd ${{ matrix.service }}
+          docker compose config > /dev/null
+          echo "✅ ${{ matrix.service }}/compose.yaml is valid"
 
   makefile-test:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Test Makefile help
-      run: make help
-    
-    - name: Verify Makefile syntax
-      run: |
-        make -n up mysql || echo "✅ Makefile syntax is valid"
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Test Makefile help
+        run: make help
+
+      - name: Verify Makefile syntax
+        run: |
+          make -n up mysql || echo "✅ Makefile syntax is valid"
