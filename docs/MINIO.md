@@ -1,5 +1,7 @@
 # MinIO Documentation
 
+> **Note:** Personal development setup. Not production-ready.
+
 ## 📦 Service Details
 
 | Property         | Value              |
@@ -16,10 +18,10 @@
 
 MinIO is a High-Performance Object Storage system released under GNU AGPLv3. It is API compatible with Amazon S3 cloud storage service.
 
-### Key Features:
+### Features:
 
 - 🪣 **S3 Compatible** - Drop-in replacement for Amazon S3
-- ⚡ **High Performance** - Read/write speeds up to 183 GB/s
+- ⚡ **High Performance** - High performance
 - 🌐 **Distributed** - Scale across multiple servers
 - 🔐 **Secure** - Encryption at rest and in transit
 - 🎨 **Web Console** - Built-in browser-based UI
@@ -27,7 +29,7 @@ MinIO is a High-Performance Object Storage system released under GNU AGPLv3. It 
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # Start MinIO
@@ -45,7 +47,7 @@ make logs minio
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables (`.env`)
 
@@ -64,7 +66,7 @@ MINIO_ROOT_PASSWORD=minioadmin
 
 ---
 
-## 🔌 Connection Details
+## Connection
 
 ### S3-Compatible Endpoint
 
@@ -145,7 +147,7 @@ mc ls myminio/my-bucket/
 
 ---
 
-## 💡 Common Operations
+## Common Operations
 
 ### Using Web Console
 
@@ -210,7 +212,7 @@ url = s3.generate_presigned_url(
 
 ---
 
-## 🔌 Integration with Other Services
+## Integration
 
 ### With Label Studio (Cloud Storage)
 
@@ -275,7 +277,7 @@ s3.put_bucket_policy(
 
 ---
 
-## 💾 Data Persistence
+## Data Persistence
 
 MinIO data is stored in a Docker volume:
 
@@ -305,7 +307,7 @@ make clean minio
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Cannot Access Web Console
 
@@ -387,16 +389,16 @@ s3.upload_file(
 
 ---
 
-## 📚 Resources
+## Resources
 
-- **Official Docs:** https://min.io/docs/minio/linux/index.html
+- **Docs:** https://min.io/docs/minio/linux/index.html
 - **Docker Hub:** https://hub.docker.com/r/minio/minio
 - **S3 API Reference:** https://docs.aws.amazon.com/AmazonS3/latest/API/
 - **MinIO Client:** https://min.io/docs/minio/linux/reference/minio-mc.html
 
 ---
 
-## 🎯 Best Practices
+## Best Practices
 
 1. **Use strong credentials** - Change default minioadmin password
 2. **Bucket policies** - Set appropriate access policies

@@ -1,5 +1,7 @@
 # PostgreSQL Documentation
 
+> **Note:** Personal development setup. Not production-ready.
+
 ## 📦 Service Details
 
 | Property      | Value              |
@@ -13,62 +15,42 @@
 
 ## 🎯 What is PostgreSQL?
 
-PostgreSQL is a powerful, open-source object-relational database system with over 35 years of active development. Known for its reliability, feature robustness, and performance.
+Open-source relational database system.
 
-### Key Features:
+### Features:
 
-- 🔒 **ACID Compliant** - Full transaction support
-- 🔍 **Advanced Queries** - Complex queries, foreign keys, triggers, views
-- 📊 **JSON Support** - Native JSON and JSONB data types
-- 🔐 **Security** - SSL support, row-level security
-- 🌐 **Extensions** - PostGIS, pg_trgm, uuid-ossp, and more
-- 🚀 **Performance** - Advanced indexing, query optimization
+- ACID compliant
+- Advanced queries, foreign keys, triggers, views
+- JSON/JSONB support
+- SSL, row-level security
+- Extensions: PostGIS, pg_trgm, uuid-ossp
+- Advanced indexing
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
-# Start PostgreSQL
 make up postgresql
-
-# Check status
 make ps postgresql
-
-# View logs
 make logs postgresql
-
-# Access PostgreSQL shell
 make shell postgresql
-
-# Execute SQL command
 make exec postgresql "SELECT version();"
 ```
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
-### Environment Variables (`.env`)
+### Environment Variables
 
 ```bash
-# Database credentials
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_DB=postgres
 ```
 
-### Customize Settings
-
-Edit `postgresql/.env`:
-
-```bash
-POSTGRES_USER=myuser
-POSTGRES_PASSWORD=securepassword
-POSTGRES_DB=mydatabase
-```
-
-Then restart:
+Edit `postgresql/.env` and restart:
 
 ```bash
 make restart postgresql
@@ -76,22 +58,18 @@ make restart postgresql
 
 ---
 
-## 🔌 Connection Details
+## Connection
 
-### From Host Machine
+### From Host
 
 ```bash
-# Using psql
 psql -h localhost -p 5432 -U postgres -d postgres
-
-# Connection URL
 postgresql://postgres:postgres@localhost:5432/postgres
 ```
 
 ### From Docker Network
 
 ```bash
-# Connection URL (for other containers)
 postgresql://postgres:postgres@postgres-container:5432/postgres
 ```
 
@@ -138,7 +116,7 @@ conn, err := pgx.Connect(context.Background(),
 
 ---
 
-## 💡 Common Operations
+## Common Operations
 
 ### Create Database
 
@@ -190,7 +168,7 @@ docker exec postgres-container psql -U postgres -d mydb -c "\dt"
 
 ---
 
-## 🔌 Integration with Other Services
+## Integration
 
 ### With MLflow
 
@@ -243,7 +221,7 @@ CREATE EXTENSION fuzzystrmatch;
 
 ---
 
-## 💾 Data Persistence
+## Data Persistence
 
 PostgreSQL data is stored in a Docker volume:
 
@@ -269,7 +247,7 @@ make clean postgresql
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Connection Refused
 
@@ -304,16 +282,16 @@ FROM pg_database;
 
 ---
 
-## 📚 Resources
+## Resources
 
-- **Official Docs:** https://www.postgresql.org/docs/
+- **Docs:** https://www.postgresql.org/docs/
 - **Docker Hub:** https://hub.docker.com/_/postgres
 - **SQL Tutorial:** https://www.postgresqltutorial.com/
 - **Performance Tuning:** https://wiki.postgresql.org/wiki/Performance_Optimization
 
 ---
 
-## 🎯 Best Practices
+## Best Practices
 
 1. **Always use environment variables** for sensitive data
 2. **Regular backups** - Use `pg_dump` or volume backups
@@ -324,7 +302,7 @@ FROM pg_database;
 
 ---
 
-## 📈 Performance Tips
+## Performance Tips
 
 ```sql
 -- Enable query statistics

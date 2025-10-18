@@ -1,5 +1,7 @@
 # Microsoft SQL Server Documentation
 
+> **Note:** Personal development setup. Not production-ready.
+
 ## 📦 Service Details
 
 | Property      | Value                                      |
@@ -15,7 +17,7 @@
 
 Microsoft SQL Server is a relational database management system developed by Microsoft. It's widely used in enterprise applications and supports transaction processing, business intelligence, and analytics.
 
-### Key Features:
+### Features:
 
 - 🔒 **Enterprise-Grade** - Production-ready RDBMS
 - 📊 **T-SQL** - Advanced Transact-SQL support
@@ -26,7 +28,7 @@ Microsoft SQL Server is a relational database management system developed by Mic
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # Start SQL Server
@@ -44,7 +46,7 @@ make shell mssql-server
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables (`.env`)
 
@@ -62,7 +64,7 @@ MSSQL_PID=Developer
 
 ---
 
-## 🔌 Connection Details
+## Connection
 
 ### From Host Machine
 
@@ -139,7 +141,7 @@ var version = command.ExecuteScalar();
 
 ---
 
-## 💡 Common Operations
+## Common Operations
 
 ### Create Database
 
@@ -210,7 +212,7 @@ GO
 
 ---
 
-## 💾 Data Persistence
+## Data Persistence
 
 SQL Server data is stored in a Docker volume:
 
@@ -227,7 +229,7 @@ make clean mssql-server
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Container Exits Immediately
 
@@ -261,16 +263,16 @@ GO
 
 ---
 
-## 📚 Resources
+## Resources
 
-- **Official Docs:** https://learn.microsoft.com/en-us/sql/sql-server/
+- **Docs:** https://learn.microsoft.com/en-us/sql/sql-server/
 - **Docker Hub:** https://hub.docker.com/_/microsoft-mssql-server
 - **T-SQL Reference:** https://learn.microsoft.com/en-us/sql/t-sql/
 - **SSMS Download:** https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms
 
 ---
 
-## 🎯 Best Practices
+## Best Practices
 
 1. **Strong passwords** - Use complex passwords (8+ chars, mixed case, numbers, symbols)
 2. **Regular backups** - Schedule automated backups
@@ -281,7 +283,7 @@ GO
 
 ---
 
-## 📈 Performance Tips
+## Performance Tips
 
 ```sql
 -- Create index

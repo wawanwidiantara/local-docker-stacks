@@ -1,5 +1,7 @@
 # Label Studio Added - Summary
 
+> **Note:** Personal development setup. Not production-ready.
+
 ## ✅ Label Studio Successfully Added!
 
 **Label Studio** is an open-source data labeling tool for machine learning projects. It supports multiple data types and ML frameworks.
@@ -22,7 +24,7 @@
 
 Label Studio is a **data annotation and labeling platform** for creating training data for ML/AI models.
 
-### Key Features:
+### Features:
 
 - 📝 **Multi-format support:** Images, text, audio, video, time-series, HTML
 - 🤖 **ML integration:** Pre-labeling with models, active learning
@@ -157,7 +159,7 @@ project = ls.start_project(
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables (`.env`)
 
@@ -184,7 +186,7 @@ LABEL_STUDIO_PASSWORD=your_secure_password
 
 ---
 
-## 🔌 Integration with Other Services
+## Integration
 
 ### With PostgreSQL (Required)
 
@@ -323,7 +325,7 @@ make up labelstudio mlflow qdrant
 
 ---
 
-## 💾 Data Persistence
+## Data Persistence
 
 Label Studio stores data in two places:
 
@@ -344,9 +346,9 @@ docker run --rm -v labelstudio-data:/data -v $(pwd):/backup alpine tar czf /back
 
 ---
 
-## 📚 Resources
+## Resources
 
-- **Official Docs:** https://labelstud.io/guide/
+- **Docs:** https://labelstud.io/guide/
 - **Python SDK:** https://github.com/heartexlabs/label-studio-sdk
 - **Templates:** https://labelstud.io/templates
 - **Playground:** https://labelstud.io/playground/

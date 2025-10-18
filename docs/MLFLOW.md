@@ -1,5 +1,7 @@
 # MLflow Documentation
 
+> **Note:** Personal development setup. Not production-ready.
+
 ## 📦 Service Details
 
 | Property      | Value                  |
@@ -16,7 +18,7 @@
 
 MLflow is an open-source platform for managing the end-to-end machine learning lifecycle. It tracks experiments, packages code, and manages model deployment.
 
-### Key Features:
+### Features:
 
 - 🧪 **Experiment Tracking** - Log parameters, metrics, artifacts
 - 📦 **Model Registry** - Version and manage models
@@ -27,7 +29,7 @@ MLflow is an open-source platform for managing the end-to-end machine learning l
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # 1. Start PostgreSQL
@@ -48,7 +50,7 @@ make up mlflow
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables (`.env`)
 
@@ -295,7 +297,7 @@ predictions = model.predict(X_test)
 
 ---
 
-## 🔌 Integration with Other Services
+## Integration
 
 ### With MinIO (Artifact Storage)
 
@@ -322,14 +324,14 @@ with mlflow.start_run():
 
 ---
 
-## 💾 Data Persistence
+## Data Persistence
 
 - **Database:** PostgreSQL stores experiment metadata
 - **Artifacts:** Stored in Docker volume `mlflow-artifacts`
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Container Restarting
 
@@ -355,9 +357,9 @@ docker network inspect local-dev-network
 
 ---
 
-## 📚 Resources
+## Resources
 
-- **Official Docs:** https://mlflow.org/docs/latest/index.html
+- **Docs:** https://mlflow.org/docs/latest/index.html
 - **GitHub:** https://github.com/mlflow/mlflow
 - **Python API:** https://mlflow.org/docs/latest/python_api/index.html
 

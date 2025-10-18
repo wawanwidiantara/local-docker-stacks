@@ -1,25 +1,19 @@
 # Local Docker Stacks
 
-🚀 **Quick local development databases and services** - Keep your machine clean, no local installations needed.
+Quick access to development databases and services via Docker.
+
+> **⚠️ Personal Use Disclaimer**  
+> This repository is for my personal development workflow. Configurations prioritize convenience over best practices and are **not suitable for production use**. Use at your own discretion.
 
 ---
 
 ## ⚡ Quick Start
 
 ```bash
-# 1. Setup environment files
-make init
-
-# 2. Start services you need
-make up postgresql redis mongodb
-
-# 3. Access services
-make shell postgresql    # Open psql
-make logs redis          # View logs
-make ps-all              # Check all services
-
-# 4. Stop when done
-make down postgresql redis
+make init                           # Setup .env files
+make up postgresql redis            # Start services
+make shell postgresql               # Access database
+make down postgresql redis          # Stop services
 ```
 
 ---
@@ -71,58 +65,42 @@ make down postgresql redis
 ### Basic Usage
 
 ```bash
-# Initialize .env files
 make init
-
-# Start any service
 make up postgresql redis
-
-# Stop service
 make down postgresql
 ```
 
 ### ML/AI Services Setup
 
-MLflow, Metabase, and Label Studio require PostgreSQL + shared network:
+MLflow, Metabase, and Label Studio need PostgreSQL + shared network:
 
 ```bash
-# 1. Start PostgreSQL
 make up postgresql
-
-# 2. Create databases
 docker exec -it postgres-container psql -U postgres << EOF
 CREATE DATABASE mlflow;
 CREATE DATABASE metabase;
 CREATE DATABASE labelstudio;
 EOF
-
-# 3. Create shared network
 docker network create local-dev-network
-
-# 4. Start ML services
 make up mlflow metabase labelstudio
 ```
-
-📖 **For detailed setup:** Check individual service documentation links above.
 
 ---
 
 ## 📖 Common Commands
 
 ```bash
-make help                    # Show all commands
-make up <service>            # Start service
-make down <service>          # Stop service
-make restart <service>       # Restart service
-make logs <service>          # View logs
-make shell <service>         # Open database CLI
-make ps-all                  # Check all services status
-make up-all                  # Start ALL services
-make down-all                # Stop ALL services
-make clean <service>         # ⚠️ Delete service + data
+make help
+make up <service>
+make down <service>
+make restart <service>
+make logs <service>
+make shell <service>
+make ps-all
+make clean <service>
 ```
 
-**Service names:** `postgresql`, `mysql`, `mongodb`, `redis`, `mssql-server`, `minio`, `mailhog`, `mlflow`, `qdrant`, `chromadb`, `metabase`, `kafka`, `labelstudio`
+Services: `postgresql`, `mysql`, `mongodb`, `redis`, `mssql-server`, `minio`, `mailhog`, `mlflow`, `qdrant`, `chromadb`, `metabase`, `kafka`, `labelstudio`
 
 ---
 
@@ -141,21 +119,17 @@ make clean <service>         # ⚠️ Delete service + data
 | Metabase     | http://localhost:3001 | Setup on first login          |
 | Label Studio | http://localhost:8082 | `admin@example.com` / `admin` |
 
-💡 **Customize:** Edit `.env` files in each service directory before first start.
+Customize: Edit `.env` files in each service directory.
 
 ---
 
-## 🌐 Connect Services Together
-
-To connect services to each other (e.g., your app accessing databases):
-
-**1. Create shared network:**
+## 🌐 Connect Services
 
 ```bash
 docker network create local-dev-network
 ```
 
-**2. Add to your `docker-compose.yaml`:**
+Add to your `docker-compose.yaml`:
 
 ```yaml
 networks:
@@ -167,7 +141,7 @@ networks:
     name: local-dev-network
 ```
 
-**3. Use container names as hostnames:**
+Container hostnames:
 
 - PostgreSQL: `postgres-container:5432`
 - MySQL: `mysql-container:3306`
@@ -179,114 +153,57 @@ networks:
 
 ## 🧹 Cleanup & Troubleshooting
 
-### Cleanup Commands
+### Cleanup
 
 ```bash
-# Remove service with data
 make clean postgresql
-
-# Remove all stopped containers and volumes
 docker system prune -a --volumes
-
-# Remove specific volume
 docker volume rm postgres-data
 ```
 
 ### Troubleshooting
 
 ```bash
-# Check logs
 make logs <service>
-
-# Check what's using a port
 sudo lsof -i :5432
-
-# Check container health
 docker ps
-
-# Restart service
-make restart <service>
-
-# Check Docker resources
-docker system df
-```
-
-### Common Issues
-
-**Port already in use:**
-
-```bash
-# Change port in service's compose.yaml
-ports:
-  - "5433:5432"  # Use 5433 instead of 5432
-```
-
-**Permission denied:**
-
-```bash
-docker volume rm <volume-name>
-make up <service>
-```
-
-**Container unhealthy:**
-
-```bash
-make logs <service>  # Check what's wrong
 make restart <service>
 ```
 
 ---
 
-## 📝 Adding Your Own Services
-
-1. Create service directory:
+## 📝 Adding Services
 
 ```bash
 mkdir my-service
 cd my-service
 ```
 
-2. Create `compose.yaml` and `.env.example`
-
-3. Add to Makefile (optional)
-
-4. Run:
+Create `compose.yaml` and `.env.example`, then:
 
 ```bash
 make init
 make up my-service
 ```
 
-See existing services for examples!
-
 ---
 
 ## ⚠️ Security Notice
 
-**⚡ Local development only!**
+Local development only. Not production-ready.
 
-These configurations are **NOT production-ready**:
+Missing: SSL/TLS, proper auth, secrets management, monitoring, backups.
 
-- ✅ Good for: Local dev, testing, learning
-- ❌ Missing for prod: SSL/TLS, proper auth, secrets management, monitoring, backups
-
-**Default credentials are in `.env.example` for convenience** - real values go in `.env` (gitignored).
+Default credentials in `.env.example` - customize in `.env` (gitignored).
 
 ---
 
 ## 📚 Documentation
 
-- **Databases:** [PostgreSQL](docs/POSTGRESQL.md) • [MySQL](docs/MYSQL.md) • [MongoDB](docs/MONGODB.md) • [Redis](docs/REDIS.md) • [MSSQL](docs/MSSQL.md)
-- **Storage:** [MinIO](docs/MINIO.md)
-- **ML/AI:** [Label Studio](docs/LABEL_STUDIO.md) • [Other Services](NEW_SERVICES.md)
-- **All Services:** See table above for links
+See service table above for documentation links.
 
 ---
 
 ## 📄 License
 
-MIT License - Use however you want!
-
----
-
-**Made with 💙 to keep my machine clean and development simple.**
+MIT License

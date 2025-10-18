@@ -1,5 +1,7 @@
 # MySQL Documentation
 
+> **Note:** Personal development setup. Not production-ready.
+
 ## 📦 Service Details
 
 | Property      | Value           |
@@ -13,9 +15,9 @@
 
 ## 🎯 What is MySQL?
 
-MySQL is the world's most popular open-source relational database. Known for its speed, reliability, and ease of use.
+MySQL is the popular open-source relational database. Fast and reliable.
 
-### Key Features:
+### Features:
 
 - ⚡ **Fast Performance** - Optimized for speed
 - 🔒 **ACID Compliance** - Full transaction support
@@ -26,7 +28,7 @@ MySQL is the world's most popular open-source relational database. Known for its
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # Start MySQL
@@ -47,7 +49,7 @@ make exec mysql "SELECT version();"
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables (`.env`)
 
@@ -72,7 +74,7 @@ MYSQL_PASSWORD=your_password
 
 ---
 
-## 🔌 Connection Details
+## Connection
 
 ### From Host Machine
 
@@ -133,7 +135,7 @@ if ($conn->connect_error) {
 
 ---
 
-## 💡 Common Operations
+## Common Operations
 
 ### Create Database
 
@@ -182,7 +184,7 @@ docker exec mysql-container mysql -uroot -prootpassword myapp -e "SHOW TABLES;"
 
 ---
 
-## 💾 Data Persistence
+## Data Persistence
 
 MySQL data is stored in a Docker volume:
 
@@ -199,7 +201,7 @@ make clean mysql
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Connection Refused
 
@@ -236,16 +238,16 @@ GROUP BY table_schema;
 
 ---
 
-## 📚 Resources
+## Resources
 
-- **Official Docs:** https://dev.mysql.com/doc/
+- **Docs:** https://dev.mysql.com/doc/
 - **Docker Hub:** https://hub.docker.com/_/mysql
 - **MySQL Tutorial:** https://www.mysqltutorial.org/
 - **Performance Schema:** https://dev.mysql.com/doc/refman/8.0/en/performance-schema.html
 
 ---
 
-## 🎯 Best Practices
+## Best Practices
 
 1. **Use strong passwords** for root and application users
 2. **Regular backups** - Schedule automated backups
@@ -256,7 +258,7 @@ GROUP BY table_schema;
 
 ---
 
-## 📈 Performance Tips
+## Performance Tips
 
 ```sql
 -- Enable slow query log

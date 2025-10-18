@@ -1,5 +1,7 @@
 # MongoDB Documentation
 
+> **Note:** Personal development setup. Not production-ready.
+
 ## 📦 Service Details
 
 | Property      | Value             |
@@ -15,7 +17,7 @@
 
 MongoDB is a source-available cross-platform document-oriented database program. As a NoSQL database, MongoDB uses JSON-like documents with optional schemas.
 
-### Key Features:
+### Features:
 
 - 📄 **Document-Oriented** - Stores data in flexible JSON documents
 - 🚀 **High Performance** - Fast reads and writes
@@ -26,7 +28,7 @@ MongoDB is a source-available cross-platform document-oriented database program.
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # Start MongoDB
@@ -44,7 +46,7 @@ make shell mongodb
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables (`.env`)
 
@@ -57,7 +59,7 @@ MONGO_INITDB_DATABASE=myapp
 
 ---
 
-## 🔌 Connection Details
+## Connection
 
 ### From Host Machine
 
@@ -120,7 +122,7 @@ client, err := mongo.Connect(ctx, options.Client().
 
 ---
 
-## 💡 Common Operations
+## Common Operations
 
 ### Create Database & Collection
 
@@ -184,7 +186,7 @@ show collections;
 
 ---
 
-## 💾 Data Persistence
+## Data Persistence
 
 MongoDB data is stored in a Docker volume:
 
@@ -201,7 +203,7 @@ make clean mongodb
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Connection Refused
 
@@ -233,16 +235,16 @@ db.runCommand({ dbStats: 1 });
 
 ---
 
-## 📚 Resources
+## Resources
 
-- **Official Docs:** https://www.mongodb.com/docs/
+- **Docs:** https://www.mongodb.com/docs/
 - **Docker Hub:** https://hub.docker.com/_/mongo
 - **MongoDB University:** https://university.mongodb.com/
 - **Aggregation Pipeline:** https://www.mongodb.com/docs/manual/aggregation/
 
 ---
 
-## 🎯 Best Practices
+## Best Practices
 
 1. **Use indexes** - Create indexes on frequently queried fields
 2. **Schema design** - Design schemas for your query patterns
@@ -253,7 +255,7 @@ db.runCommand({ dbStats: 1 });
 
 ---
 
-## 📈 Performance Tips
+## Performance Tips
 
 ```javascript
 // Create index

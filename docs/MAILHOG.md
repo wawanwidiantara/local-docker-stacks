@@ -1,5 +1,7 @@
 # MailHog Documentation
 
+> **Note:** Personal development setup. Not production-ready.
+
 ## 📦 Service Details
 
 | Property        | Value                  |
@@ -16,7 +18,7 @@
 
 MailHog is an email testing tool for developers. It captures emails sent from your application and displays them in a web interface - perfect for testing without sending real emails.
 
-### Key Features:
+### Features:
 
 - 📧 **Email Capture** - Catches all outgoing emails
 - 🌐 **Web Interface** - View emails in browser
@@ -27,7 +29,7 @@ MailHog is an email testing tool for developers. It captures emails sent from yo
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # Start MailHog
@@ -45,7 +47,7 @@ make logs mailhog
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
 ### Ports
 
@@ -225,7 +227,7 @@ requests.delete('http://localhost:8025/api/v1/messages')
 
 ---
 
-## 🔌 Integration with Other Services
+## Integration
 
 ### From Docker Network
 
@@ -290,7 +292,7 @@ Capture emails in staging/demo environments.
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Cannot Access Web UI
 
@@ -326,15 +328,15 @@ EOF
 
 ---
 
-## 📚 Resources
+## Resources
 
-- **Official Docs:** https://github.com/mailhog/MailHog
+- **Docs:** https://github.com/mailhog/MailHog
 - **API Documentation:** https://github.com/mailhog/MailHog/blob/master/docs/APIv2.md
 - **Docker Hub:** https://hub.docker.com/r/mailhog/mailhog
 
 ---
 
-## 🎯 Best Practices
+## Best Practices
 
 1. **Don't use in production** - MailHog is for development/testing only
 2. **Clear emails regularly** - Prevents memory buildup

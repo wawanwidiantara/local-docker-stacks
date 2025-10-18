@@ -1,5 +1,7 @@
 # Qdrant Documentation
 
+> **Note:** Personal development setup. Not production-ready.
+
 ## 📦 Service Details
 
 | Property       | Value                |
@@ -16,7 +18,7 @@
 
 Qdrant is an open-source vector similarity search engine with extended filtering support. Perfect for semantic search, recommendations, and RAG (Retrieval Augmented Generation) applications.
 
-### Key Features:
+### Features:
 
 - 🔍 **Vector Search** - Fast similarity search
 - 📊 **Filtering** - Rich filtering on metadata
@@ -27,7 +29,7 @@ Qdrant is an open-source vector similarity search engine with extended filtering
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # Start Qdrant
@@ -198,9 +200,9 @@ answer = rag_query("What is Python?")
 
 ---
 
-## 📚 Resources
+## Resources
 
-- **Official Docs:** https://qdrant.tech/documentation/
+- **Docs:** https://qdrant.tech/documentation/
 - **Python Client:** https://github.com/qdrant/qdrant-client
 - **Docker Hub:** https://hub.docker.com/r/qdrant/qdrant
 

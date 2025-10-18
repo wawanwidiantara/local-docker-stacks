@@ -1,5 +1,7 @@
 # Redis Documentation
 
+> **Note:** Personal development setup. Not production-ready.
+
 ## 📦 Service Details
 
 | Property      | Value           |
@@ -15,9 +17,9 @@
 
 Redis (Remote Dictionary Server) is an open-source, in-memory data structure store used as a database, cache, message broker, and streaming engine.
 
-### Key Features:
+### Features:
 
-- ⚡ **Blazing Fast** - Sub-millisecond response times
+- ⚡ **Fast** - Fast response times
 - 💾 **In-Memory** - All data stored in RAM for speed
 - 🔄 **Persistence** - Optional disk persistence (RDB, AOF)
 - 📊 **Data Structures** - Strings, hashes, lists, sets, sorted sets
@@ -26,7 +28,7 @@ Redis (Remote Dictionary Server) is an open-source, in-memory data structure sto
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # Start Redis
@@ -44,7 +46,7 @@ make shell redis
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables (`.env`)
 
@@ -55,7 +57,7 @@ REDIS_PASSWORD=your_redis_password
 
 ---
 
-## 🔌 Connection Details
+## Connection
 
 ### From Host Machine
 
@@ -128,7 +130,7 @@ val, err := client.Get(ctx, "key").Result()
 
 ---
 
-## 💡 Common Operations
+## Common Operations
 
 ### Basic Key-Value Operations
 
@@ -213,7 +215,7 @@ def get_user(user_id):
 
 ---
 
-## 💾 Data Persistence
+## Data Persistence
 
 Redis data can be persisted in two ways:
 
@@ -235,7 +237,7 @@ make clean redis
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Connection Refused
 
@@ -340,16 +342,16 @@ def release_lock(lock_name):
 
 ---
 
-## 📚 Resources
+## Resources
 
-- **Official Docs:** https://redis.io/docs/
+- **Docs:** https://redis.io/docs/
 - **Docker Hub:** https://hub.docker.com/_/redis
 - **Redis University:** https://university.redis.com/
 - **Command Reference:** https://redis.io/commands/
 
 ---
 
-## 🎯 Best Practices
+## Best Practices
 
 1. **Set expiration times** - Use TTL to prevent memory leaks
 2. **Use appropriate data structures** - Choose the right structure for your use case
@@ -360,7 +362,7 @@ def release_lock(lock_name):
 
 ---
 
-## 📈 Performance Tips
+## Performance Tips
 
 ```bash
 # Use pipelining
