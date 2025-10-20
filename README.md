@@ -76,11 +76,9 @@ MLflow, Metabase, and Label Studio need PostgreSQL + shared network:
 
 ```bash
 make up postgresql
-docker exec -it postgres-container psql -U postgres << EOF
-CREATE DATABASE mlflow;
-CREATE DATABASE metabase;
-CREATE DATABASE labelstudio;
-EOF
+make db-create postgresql mlflow
+make db-create postgresql metabase
+make db-create postgresql labelstudio
 docker network create local-dev-network
 make up mlflow metabase labelstudio
 ```
@@ -90,14 +88,24 @@ make up mlflow metabase labelstudio
 ## 📖 Common Commands
 
 ```bash
-make help
-make up <service>
-make down <service>
-make restart <service>
-make logs <service>
-make shell <service>
-make ps-all
-make clean <service>
+make help                           # Show all commands
+make up <service>                   # Start service
+make down <service>                 # Stop service
+make restart <service>              # Restart service
+make logs <service>                 # View logs
+make shell <service>                # Access shell
+make ps-all                         # Status of all services
+make clean <service>                # Stop and remove volumes
+
+# Database operations
+make backup <service>               # Backup database
+make restore <service> <file>       # Restore from backup
+make db-list <service>              # List databases
+make db-create <service> <db>       # Create database
+make db-drop <service> <db>         # Drop database
+make db-stats <service>             # Show statistics
+make db-export <service> <db>       # Export to SQL file
+make db-import <service> <file>     # Import SQL file
 ```
 
 Services: `postgresql`, `mysql`, `mongodb`, `redis`, `mssql-server`, `minio`, `mailhog`, `mlflow`, `qdrant`, `chromadb`, `metabase`, `kafka`, `labelstudio`
