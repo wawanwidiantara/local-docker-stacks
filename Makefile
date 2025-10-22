@@ -398,7 +398,7 @@ db-stats:
 				;; \
 			mysql) \
 				echo "MySQL Database Statistics:"; \
-				cd $$SERVICE && docker compose exec mysql-db mysql -u$${MYSQL_USER:-testuser} -p$${MYSQL_PASSWORD:-testpassword} -e "SELECT table_schema AS 'Database', ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS 'Size (MB)' FROM information_schema.tables GROUP BY table_schema;"; \
+				cd $$SERVICE && MYSQL_ROOT_PASSWORD=$$(grep "^MYSQL_ROOT_PASSWORD=" .env | cut -d "=" -f2) && docker compose exec mysql-db mysql -uroot -p"$$MYSQL_ROOT_PASSWORD" -e "SELECT table_schema AS 'Database', ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS 'Size (MB)' FROM information_schema.tables GROUP BY table_schema;"; \
 				;; \
 			mongodb) \
 				echo "MongoDB Database Statistics:"; \
@@ -451,7 +451,7 @@ db-create:
 				;; \
 			mysql) \
 				echo "Creating MySQL database '$$DBNAME'..."; \
-				cd $$SERVICE && docker compose exec mysql-db mysql -u$${MYSQL_USER:-testuser} -p$${MYSQL_PASSWORD:-testpassword} -e "CREATE DATABASE $$DBNAME;"; \
+				cd $$SERVICE && MYSQL_ROOT_PASSWORD=$$(grep "^MYSQL_ROOT_PASSWORD=" .env | cut -d "=" -f2) && docker compose exec mysql-db mysql -uroot -p"$$MYSQL_ROOT_PASSWORD" -e "CREATE DATABASE $$DBNAME;"; \
 				echo "✓ Database '$$DBNAME' created successfully"; \
 				;; \
 			mongodb) \
@@ -492,7 +492,7 @@ db-list:
 				;; \
 			mysql) \
 				echo "MySQL Databases:"; \
-				cd $$SERVICE && docker compose exec mysql-db mysql -u$${MYSQL_USER:-testuser} -p$${MYSQL_PASSWORD:-testpassword} -e "SHOW DATABASES;"; \
+				cd $$SERVICE && MYSQL_ROOT_PASSWORD=$$(grep "^MYSQL_ROOT_PASSWORD=" .env | cut -d "=" -f2) && docker compose exec mysql-db mysql -uroot -p"$$MYSQL_ROOT_PASSWORD" -e "SHOW DATABASES;"; \
 				;; \
 			mongodb) \
 				echo "MongoDB Databases:"; \
@@ -546,7 +546,7 @@ db-drop:
 						;; \
 					mysql) \
 						echo "Dropping MySQL database '$$DBNAME'..."; \
-						cd $$SERVICE && docker compose exec mysql-db mysql -u$${MYSQL_USER:-testuser} -p$${MYSQL_PASSWORD:-testpassword} -e "DROP DATABASE $$DBNAME;"; \
+						cd $$SERVICE && MYSQL_ROOT_PASSWORD=$$(grep "^MYSQL_ROOT_PASSWORD=" .env | cut -d "=" -f2) && docker compose exec mysql-db mysql -uroot -p"$$MYSQL_ROOT_PASSWORD" -e "DROP DATABASE $$DBNAME;"; \
 						echo "✓ Database '$$DBNAME' dropped successfully"; \
 						;; \
 					mongodb) \
