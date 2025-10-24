@@ -451,7 +451,7 @@ db-create:
 				;; \
 			mysql) \
 				echo "Creating MySQL database '$$DBNAME'..."; \
-				cd $$SERVICE && MYSQL_ROOT_PASSWORD=$$(grep "^MYSQL_ROOT_PASSWORD=" .env | cut -d "=" -f2) && docker compose exec mysql-db mysql -uroot -p"$$MYSQL_ROOT_PASSWORD" -e "CREATE DATABASE $$DBNAME;"; \
+				cd $$SERVICE && MYSQL_ROOT_PASSWORD=$$(grep "^MYSQL_ROOT_PASSWORD=" .env | cut -d "=" -f2) && docker compose exec mysql-db mysql -uroot -p"$$MYSQL_ROOT_PASSWORD" -e "CREATE DATABASE \`$$DBNAME\`;"; \
 				echo "✓ Database '$$DBNAME' created successfully"; \
 				;; \
 			mongodb) \
@@ -546,7 +546,7 @@ db-drop:
 						;; \
 					mysql) \
 						echo "Dropping MySQL database '$$DBNAME'..."; \
-						cd $$SERVICE && MYSQL_ROOT_PASSWORD=$$(grep "^MYSQL_ROOT_PASSWORD=" .env | cut -d "=" -f2) && docker compose exec mysql-db mysql -uroot -p"$$MYSQL_ROOT_PASSWORD" -e "DROP DATABASE $$DBNAME;"; \
+						cd $$SERVICE && MYSQL_ROOT_PASSWORD=$$(grep "^MYSQL_ROOT_PASSWORD=" .env | cut -d "=" -f2) && docker compose exec mysql-db mysql -uroot -p"$$MYSQL_ROOT_PASSWORD" -e "DROP DATABASE \`$$DBNAME\`;"; \
 						echo "✓ Database '$$DBNAME' dropped successfully"; \
 						;; \
 					mongodb) \
