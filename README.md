@@ -52,6 +52,7 @@ make down postgresql redis          # Stop services
 | ------------ | ---------- | --------------------- | -------------------------------- |
 | **MailHog**  | 1025, 8025 | http://localhost:8025 | [📖 Full Guide](docs/MAILHOG.md) |
 | **Metabase** | 3001       | http://localhost:3001 | [📖 Coming Soon]()               |
+| **n8n**      | 5678       | http://localhost:5678 | [📖 Full Guide](docs/N8N.md)     |
 
 ---
 
@@ -108,7 +109,7 @@ make db-export <service> <db>       # Export to SQL file
 make db-import <service> <file>     # Import SQL file
 ```
 
-Services: `postgresql`, `mysql`, `mongodb`, `redis`, `mssql-server`, `minio`, `mailhog`, `mlflow`, `qdrant`, `chromadb`, `metabase`, `kafka`, `labelstudio`
+Services: `postgresql`, `mysql`, `mongodb`, `redis`, `mssql-server`, `minio`, `mailhog`, `mlflow`, `qdrant`, `chromadb`, `metabase`, `kafka`, `labelstudio`, `n8n`
 
 ---
 
@@ -126,6 +127,7 @@ Services: `postgresql`, `mysql`, `mongodb`, `redis`, `mssql-server`, `minio`, `m
 | MLflow       | http://localhost:5000 | No auth                       |
 | Metabase     | http://localhost:3001 | Setup on first login          |
 | Label Studio | http://localhost:8082 | `admin@example.com` / `admin` |
+| n8n          | http://localhost:5678 | `admin` / `admin`             |
 
 Customize: Edit `.env` files in each service directory.
 

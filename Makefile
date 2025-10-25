@@ -43,6 +43,7 @@ help:
 	@echo "  - metabase"
 	@echo "  - kafka"
 	@echo "  - labelstudio"
+	@echo "  - n8n"
 	@echo ""
 	@echo "Examples:"
 	@echo "  make up mysql"
@@ -150,7 +151,7 @@ clean:
 # Start all services
 up-all:
 	@echo "Starting all services..."
-	@for dir in mysql mssql-server postgresql redis mongodb minio mailhog mlflow qdrant chromadb metabase kafka labelstudio; do \
+	@for dir in mysql mssql-server postgresql redis mongodb minio mailhog mlflow qdrant chromadb metabase kafka labelstudio n8n; do \
 		if [ -d "$$dir" ]; then \
 			echo "Starting $$dir..."; \
 			cd $$dir && docker compose up -d && cd ..; \
@@ -161,7 +162,7 @@ up-all:
 # Stop all services
 down-all:
 	@echo "Stopping all services..."
-	@for dir in mysql mssql-server postgresql redis mongodb minio mailhog mlflow qdrant chromadb metabase kafka labelstudio; do \
+	@for dir in mysql mssql-server postgresql redis mongodb minio mailhog mlflow qdrant chromadb metabase kafka labelstudio n8n; do \
 		if [ -d "$$dir" ]; then \
 			echo "Stopping $$dir..."; \
 			cd $$dir && docker compose down && cd ..; \
@@ -173,7 +174,7 @@ down-all:
 ps-all:
 	@echo "Status of all services:"
 	@echo "======================"
-	@for dir in mysql mssql-server postgresql redis mongodb minio mailhog mlflow qdrant chromadb metabase kafka labelstudio; do \
+	@for dir in mysql mssql-server postgresql redis mongodb minio mailhog mlflow qdrant chromadb metabase kafka labelstudio n8n; do \
 		if [ -d "$$dir" ]; then \
 			echo ""; \
 			echo "$$dir:"; \
@@ -239,6 +240,9 @@ shell:
 			labelstudio) \
 				echo "Label Studio has no interactive shell. Access Web UI at http://localhost:8082"; \
 				;; \
+			n8n) \
+				echo "n8n has no interactive shell. Access Web UI at http://localhost:5678"; \
+				;; \
 			*) \
 				echo "Shell not configured for $$SERVICE"; \
 				exit 1; \
@@ -268,7 +272,7 @@ exec:
 # Initialize all .env files from .env.example
 init:
 	@echo "Initializing .env files from .env.example..."
-	@for dir in mysql mssql-server postgresql redis mongodb minio mailhog mlflow qdrant chromadb metabase kafka labelstudio; do \
+	@for dir in mysql mssql-server postgresql redis mongodb minio mailhog mlflow qdrant chromadb metabase kafka labelstudio n8n; do \
 		if [ -d "$$dir" ]; then \
 			if [ -f "$$dir/.env.example" ] && [ ! -f "$$dir/.env" ]; then \
 				cp "$$dir/.env.example" "$$dir/.env"; \
