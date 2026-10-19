@@ -35,6 +35,7 @@ make down postgresql redis          # Stop services
 | Service   | Ports      | Web UI                | Documentation                  |
 | --------- | ---------- | --------------------- | ------------------------------ |
 | **MinIO** | 9000, 9001 | http://localhost:9001 | [📖 Full Guide](docs/MINIO.md) |
+| **RustFS** | 9000, 9001 | http://localhost:9001 | [📖 Full Guide](docs/RUSTFS.md) |
 | **Kafka** | 9092, 8080 | http://localhost:8080 | [📖 Coming Soon]()             |
 
 ### 🤖 AI/ML & Vector DBs
@@ -109,7 +110,7 @@ make db-export <service> <db>       # Export to SQL file
 make db-import <service> <file>     # Import SQL file
 ```
 
-Services: `postgresql`, `mysql`, `mongodb`, `redis`, `mssql-server`, `minio`, `mailhog`, `mlflow`, `qdrant`, `chromadb`, `metabase`, `kafka`, `labelstudio`, `n8n`
+Services: `postgresql`, `mysql`, `mongodb`, `redis`, `mssql-server`, `minio`, `rustfs`, `mailhog`, `mlflow`, `qdrant`, `chromadb`, `metabase`, `kafka`, `labelstudio`, `n8n`
 
 ---
 
@@ -123,6 +124,7 @@ Services: `postgresql`, `mysql`, `mongodb`, `redis`, `mssql-server`, `minio`, `m
 | Redis        | `localhost:6379`      | Password: `redispassword`     |
 | MSSQL        | `localhost:1433`      | `sa` / `YourStrong!Passw0rd`  |
 | MinIO        | http://localhost:9001 | `minioadmin` / `minioadmin`   |
+| RustFS       | http://localhost:9001 | `rustfsadmin` / `rustfsadmin` |
 | MailHog      | http://localhost:8025 | No auth                       |
 | MLflow       | http://localhost:5000 | No auth                       |
 | Metabase     | http://localhost:3001 | Setup on first login          |
@@ -158,6 +160,7 @@ Container hostnames:
 - Redis: `redis-container:6379`
 - MongoDB: `mongo-container:27017`
 - MinIO: `minio-container:9000`
+- RustFS: `rustfs-container:9000`
 
 ---
 

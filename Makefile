@@ -151,7 +151,7 @@ clean:
 # Start all services
 up-all:
 	@echo "Starting all services..."
-	@for dir in mysql mssql-server postgresql redis mongodb minio mailhog mlflow qdrant chromadb metabase kafka labelstudio n8n; do \
+	@for dir in mysql mssql-server postgresql redis mongodb minio rustfs mailhog mlflow qdrant chromadb metabase kafka labelstudio n8n; do \
 		if [ -d "$$dir" ]; then \
 			echo "Starting $$dir..."; \
 			cd $$dir && docker compose up -d && cd ..; \
@@ -162,7 +162,7 @@ up-all:
 # Stop all services
 down-all:
 	@echo "Stopping all services..."
-	@for dir in mysql mssql-server postgresql redis mongodb minio mailhog mlflow qdrant chromadb metabase kafka labelstudio n8n; do \
+	@for dir in mysql mssql-server postgresql redis mongodb minio rustfs mailhog mlflow qdrant chromadb metabase kafka labelstudio n8n; do \
 		if [ -d "$$dir" ]; then \
 			echo "Stopping $$dir..."; \
 			cd $$dir && docker compose down && cd ..; \
@@ -174,7 +174,7 @@ down-all:
 ps-all:
 	@echo "Status of all services:"
 	@echo "======================"
-	@for dir in mysql mssql-server postgresql redis mongodb minio mailhog mlflow qdrant chromadb metabase kafka labelstudio n8n; do \
+	@for dir in mysql mssql-server postgresql redis mongodb minio rustfs mailhog mlflow qdrant chromadb metabase kafka labelstudio n8n; do \
 		if [ -d "$$dir" ]; then \
 			echo ""; \
 			echo "$$dir:"; \
@@ -217,6 +217,10 @@ shell:
 			minio) \
 				echo "Opening MinIO container shell..."; \
 				cd $$SERVICE && docker compose exec minio sh; \
+				;; \
+			rustfs) \
+				echo "Opening RustFS container shell..."; \
+				echo "RustFS image is minimal; use the web UI at http://localhost:9001"; \
 				;; \
 			mailhog) \
 				echo "MailHog has no interactive shell. Access Web UI at http://localhost:8025"; \
@@ -272,7 +276,7 @@ exec:
 # Initialize all .env files from .env.example
 init:
 	@echo "Initializing .env files from .env.example..."
-	@for dir in mysql mssql-server postgresql redis mongodb minio mailhog mlflow qdrant chromadb metabase kafka labelstudio n8n; do \
+	@for dir in mysql mssql-server postgresql redis mongodb minio rustfs mailhog mlflow qdrant chromadb metabase kafka labelstudio n8n; do \
 		if [ -d "$$dir" ]; then \
 			if [ -f "$$dir/.env.example" ] && [ ! -f "$$dir/.env" ]; then \
 				cp "$$dir/.env.example" "$$dir/.env"; \

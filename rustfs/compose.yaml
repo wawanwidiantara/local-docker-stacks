@@ -1,0 +1,43 @@
+services:
+  rustfs-init:
+    image: alpine:3.20
+    container_name: rustfs-init
+    command: chown -R 10001:10001 /data /logs
+    volumes:
+      - rustfs-data:/data
+      - rustfs-logs:/logs
+    restart: "no"
+
+  rustfs:
+    image: rustfs/rustfs:1.0.3
+    container_name: rustfs-container
+    restart: unless-stopped
+    depends_on:
+      rustfs-init:
+        condition: service_completed_successfully
+    environment:
+      RUSTFS_VOLUMES: /data
+      RUSTFS_ADDRESS: 0.0.0.0:9000
+      RUSTFS_CONSOLE_ADDRESS: 0.0.0.0:9001
+      RUSTFS_CONSOLE_ENABLE: "true"
+      RUSTFS_ACCESS_KEY: ${RUSTFS_ACCESS_KEY}
+      RUSTFS_SECRET_KEY: ${RUSTFS_SECRET_KEY}
+      RUSTFS_OBS_LOG_DIRECTORY: /app/logs
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - rustfs-data:/data
+      - rustfs-logs:/app/logs
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://127.0.0.1:9000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  rustfs-data:
+    driver: local
+  rustfs-logs:
+    driver: local

@@ -20,6 +20,7 @@ jobs:
             redis,
             mongodb,
             minio,
+            rustfs,
             mailhog,
             mlflow,
             qdrant,

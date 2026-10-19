@@ -19,6 +19,7 @@ assignees: ''
 - [ ] Redis
 - [ ] MongoDB
 - [ ] MinIO
+- [ ] RustFS
 - [ ] Makefile
 - [ ] Other (please specify)
 
